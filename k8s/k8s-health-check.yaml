@@ -1,0 +1,90 @@
+# deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: health-check
+  namespace: desarrollo
+  # etiqueta de este deployment
+  labels:
+    app: health-check
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      # debe hacer match con el label que tenga el deployment
+      app: health-check
+  template:
+    metadata:
+      labels:
+        # etiqueta asignada al pod, debe ser igual que el label del selector
+        app: health-check
+    spec:
+      containers:
+        - name: health-check
+          image: localhost:5000/health-check:latest
+          # capacidad de la máquina en ejecución normal y limite
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          # variables de entorno
+          env:
+            - name: "VERSION"
+              valueFrom:
+                secretKeyRef:
+                  name: appsecrets
+                  key: version
+          # puerto asignado al contenedor
+          ports:
+            - containerPort: 3000
+          # ante cualquier cambio hacer siempre pull de la imagen
+          imagePullPolicy: Always
+          # LivenessProbe para verificar la salud del contenedor
+          livenessProbe:
+            httpGet:
+              path: /health/ping
+              port: 3000
+            initialDelaySeconds: 3
+            periodSeconds: 60
+      volumes:
+        - name: appsecrets-volume
+          secret:
+            secretName: appsecrets
+
+---
+# service
+apiVersion: v1
+kind: Service
+metadata:
+  name: health-check-service
+  namespace: desarrollo
+spec:
+  type: NodePort
+  selector:
+    app: health-check
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+      nodePort: 30000
+
+---
+# ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: health-check-ingress
+spec:
+  rules:
+    - http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: health-check-service
+                port:
+                  number: 3000
