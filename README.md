@@ -6,9 +6,17 @@ Aplicación encargada de realizar todas las operaciones necesarias del sistema r
 
 ## Iniciar la aplicación
 
-La aplicación está construida con [Flask](https://flask.palletsprojects.com/en/3.0.x/) y [pipenv](https://pipenv-es.readthedocs.io/es/latest/). Para ejecutarla localmente primero se debe configurar el archivo .env con los valores adecuados a utilizar en las variables de ambiente. En el repositorio se encuentra el archivo .env.example el cual tiene la estructura básica con la información que debe configurar para que la aplicación pueda subir de forma correcta, solo es necesario cambiar el nombre y extensión del archivo por .env y configurar los valores apropiados al ambiente de ejecución.
+La aplicación está construida con [Flask](https://flask.palletsprojects.com/en/3.0.x/) y [pipenv](https://pipenv-es.readthedocs.io/es/latest/).
 
-Una vez configuradas las variables de ambiente la aplicación puede subir de forma local de las siguientes maneras:
+Para ejecutar la aplicación localmente primero se debe configurar el archivo .env con los valores adecuados a utilizar en las variables de ambiente. En el repositorio se encuentra el archivo .env.example el cual tiene la estructura básica con la información que debe configurar para que la aplicación pueda subir de forma correcta, solo es necesario copiar el archivo y cambiar el nombre y extensión a .env y posteriormente configurar los valores apropiados al ambiente de ejecución.
+
+Antes de ejecutar cualquier aplicación Python del sistema SportApp se debe tener una única instancia de la base de datos. Todos los proyectos cuentan con una carpeta db la cual tiene el Docker Compose ejemplo para crear una instancia de PostgreSQL.
+
+Si no cuenta con la base de datos creada puede ejecutar desde la ruta ./db el siguiente comando:
+
+- `docker-compose up -d`
+
+Una vez se tengan configuradas las variables de ambiente y la base de datos este arriba, puede subir de forma local la aplicación de las siguientes maneras:
 
 ### Flask
 

@@ -5,6 +5,7 @@ from flask import Flask, jsonify
 from src.errors.errors import ApiError
 from src.blueprints.health_blueprint import health_blueprint
 from src.blueprints.deporte_blueprint import deporte_blueprint
+from src.models.db import init_db
 
 # Configuración logging
 logging.basicConfig(level=logging.INFO,
@@ -16,6 +17,9 @@ loaded = load_dotenv()
 
 # Crear instancia de Flask
 app = Flask(__name__)
+
+# Inicializar base de datos
+init_db()
 
 # Registro de blueprints
 PREFIJO = '/gestor-usuarios/'
