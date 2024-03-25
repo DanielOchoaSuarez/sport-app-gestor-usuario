@@ -1,7 +1,7 @@
 import os
 import logging
 from flask import Blueprint, jsonify
-from src.health_check.health import Health
+from src.commands.health_check.health import Health
 
 VERSION = os.getenv('VERSION')
 

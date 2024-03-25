@@ -18,6 +18,10 @@ Ejecutar los siguientes comandos desde la ruta del proyecto a nivel del archivo 
 2. `pipenv install`
 3. `FLASK_APP=./src/main.py flask run -h 0.0.0.0 -p 3000`
 
+Si requiere iniciar la aplicación para desarrollar nuevas funcionalidades o corregir defectos y desea que cada modificación se carque automáticamente puede agregar la opción reload:
+
+- `FLASK_APP=./src/main.py flask run -h 0.0.0.0 -p 3000 --reload`
+
 ### Docker
 
 El proyecto cuenta con el archivo Dockerfile con toda la configuración necesaria para ejecutar la aplicación a través de [gunicorn](https://flask.palletsprojects.com/en/3.0.x/deploying/gunicorn/). Para crear la imagen y correr la aplicación mediante un contenedor debe ejecutar los siguientes comandos en el orden establecido:
