@@ -4,7 +4,7 @@ import logging
 from src.errors.errors import BadRequest, ResourceNotFound
 from src.models.db import db_session
 from src.models.deporte import DeporteEntity, DeporteJsonSchema
-from src.utils.base_command import BaseCommand
+from src.commands.base_command import BaseCommand
 
 logger = logging.getLogger(__name__)
 
@@ -13,7 +13,7 @@ class GetDeporte(BaseCommand):
     def __init__(self, id: str):
         self.id = id
 
-    def handle(self):
+    def execute(self):
         self._validateRequest()
 
         deporte = db_session.query(DeporteEntity).filter(

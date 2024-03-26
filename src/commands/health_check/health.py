@@ -1,9 +1,9 @@
-from src.utils.base_command import BaseCommand
+from src.commands.base_command import BaseCommand
 
 
 class Health(BaseCommand):
     def __init__(self):
         pass
 
-    def handle(self):
+    def execute(self):
         return "pong"

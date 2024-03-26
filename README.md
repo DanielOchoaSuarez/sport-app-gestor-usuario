@@ -4,9 +4,41 @@
 
 Aplicación encargada de realizar todas las operaciones necesarias del sistema relacionadas con los deportistas exceptuando su registro.
 
-## Iniciar la aplicación
+## Estructura del proyecto
 
-La aplicación está construida con [Flask](https://flask.palletsprojects.com/en/3.0.x/) y [pipenv](https://pipenv-es.readthedocs.io/es/latest/).
+La aplicación está construida con Python y [Flask](https://flask.palletsprojects.com/en/3.0.x/). Para el manejo de dependencias se usa [pipenv](https://pipenv-es.readthedocs.io/es/latest/).
+
+En general dentro de cada aplicación hay dos carpetas principales, src y tests, Así como algunas rutas adicionales y varios archivos de soporte como se indican a continuación:
+
+- **./aws:** Configuración necesaria del proyecto para su despliegue en AWS.
+
+- **./db:** Docker Compose para crear instancia de PostgreSQL y ejecutar la aplicación de forma local
+
+- **./k8s:** Configuración adicional en caso de que se requiera realizar despliegue de la aplicación en un clúster Kubernetes local
+
+- **./src:** Esta carpeta tiene el código y la lógica necesaria para exponer las funcionalidades agrupadas de este microservicio. Dentro de esta ruta se puede encontrar:
+
+  - **./src/blueprints:** Agrupación de operaciones que se registran en la aplicación Flask para atender peticiones.
+
+  - **./src/commands:** Esta carpeta contiene la lógica de negocio que implementa los flujos necesarios para operar SportApp. Cada operación que se implemente hereda de la clase BaseCommand para modularizar la aplicación y gestionar las peticiones recibidas en los blueprints siguiendo el patrón [Command Pattern](https://en.wikipedia.org/wiki/Command_pattern).
+
+  - **./src/errors:** Conjunto de errores utilizados por la aplicación.
+
+  - **./src/models:** Dentro de esta ruta se encuentra la capa de persistencia. Aquí se declara la configuración y los modelos que se gestionan en la base de datos en forma de tablas. Cada modelo hereda de la clase Model que contiene un identificador único (UUID) y la fecha de creación y modificación.
+
+  - **./src/utils:** Utilidades transversales a la aplicación
+
+- **./tests:** Carpeta que contiene las pruebas unitarias de los handler implementados en la aplicación. Las pruebas unitarias necesitan de la conexión a BD y la cobertura es del 70%.
+
+- **.env.example:** Archivo con la estructura básica para cargar variables de ambiente necesarias para la ejecución de la aplicación
+
+- **.gitignore:** Lista de archivos y rutas que se ignoran para subir únicamente el código fuente a los repositorios GIT. Este archivo fue elaborado mediante el uso de la herramienta [gitignore.io](https://www.toptal.com/developers/gitignore)
+
+- **Dockerfile:** Documento que contiene las instrucciones necesarias para construir la imagen de la aplicación
+
+- **Pipfile:** Configuración del proyecto y del ambiente en el que se ejecuta la aplicación Python
+
+## Iniciar la aplicación
 
 Para ejecutar la aplicación localmente primero se debe configurar el archivo .env con los valores adecuados a utilizar en las variables de ambiente. En el repositorio se encuentra el archivo .env.example el cual tiene la estructura básica con la información que debe configurar para que la aplicación pueda subir de forma correcta, solo es necesario copiar el archivo y cambiar el nombre y extensión a .env y posteriormente configurar los valores apropiados al ambiente de ejecución.
 
