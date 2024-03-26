@@ -10,7 +10,6 @@ deporte_blueprint = Blueprint('deportes', __name__)
 
 @deporte_blueprint.route('/', methods=['GET'])
 def get_deportes():
-
     id = request.args.get('id')
 
     if id is None:

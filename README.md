@@ -37,6 +37,16 @@ El proyecto cuenta con el archivo Dockerfile con toda la configuración necesari
 1. `docker build . -t sport-app-gestor-usuarios`
 2. `docker run -p 3000:3000 --name gestor-usuarios --env-file .env sport-app-gestor-usuarios`
 
+## Pruebas unitarias
+
+Las pruebas unitarias se realizan a través de la herramienta [pytest](https://docs.pytest.org/en/8.0.x/). El proyecto cuenta con el archivo pytest.ini con la configuración del log para la ejecución de pruebas.
+
+Para correr las pruebas unitarias es necesario tener configuradas las variables de ambiente en el archivo .env como se indica en la sección Iniciar la aplicación. Puede ejecutar las pruebas unitarias con el siguiente comando:
+
+- `pytest --cov-fail-under=70 --cov=src --cov-report=html`
+
+Una vez se ejecute el comando, se corren todas las pruebas unitarias y se elabora el reporte de cobertura que puede visualizar en un navegador abriendo el archivo [./htmlcov/index.html](./htmlcov/index.html)
+
 docker tag health-check:latest localhost:5000/health-check:latest
 docker push localhost:5000/health-check:latest
 

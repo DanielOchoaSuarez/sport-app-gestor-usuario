@@ -1,6 +1,6 @@
 import os
 import logging
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, make_response
 from src.handlers.health_check.health import Health
 
 VERSION = os.getenv('VERSION')
@@ -13,4 +13,4 @@ health_blueprint = Blueprint('health', __name__)
 def health():
     logger.info('Versión de la aplicación %s', VERSION)
     result = Health().handle()
-    return jsonify({'result': result})
+    return make_response(jsonify({'result': result}), 200)

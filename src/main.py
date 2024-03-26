@@ -30,6 +30,6 @@ app.register_blueprint(deporte_blueprint, url_prefix=PREFIJO+'deportes')
 @app.errorhandler(ApiError)
 def handle_exception(err):
     response = {
-        "msg": err.description
+        "error": err.description
     }
     return jsonify(response), err.code
