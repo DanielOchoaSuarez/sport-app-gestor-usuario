@@ -17,4 +17,5 @@ class DeporteEntity(Model, Base):
 
 # Campos que estarán presentes al serializar el objeto como JSON
 class DeporteJsonSchema(Schema):
+    id = fields.String()
     nombre = fields.String()

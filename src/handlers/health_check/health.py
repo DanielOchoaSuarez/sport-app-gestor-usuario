@@ -5,5 +5,5 @@ class Health(BaseCommand):
     def __init__(self):
         pass
 
-    def execute(self):
+    def handle(self):
         return "pong"

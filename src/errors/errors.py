@@ -18,6 +18,13 @@ class Forbidden(ApiError):
     description = "No tiene permisos para acceder al recurso solicitado"
 
 
+class ResourceNotFound(ApiError):
+    def __init__(self, description=None):
+        super().__init__()
+        self.code = 404
+        self.description = description or "El recurso solicitado no existe"
+
+
 class PreconditionFailed(ApiError):
     code = 412
     description = "La información de la petición no es válida"
