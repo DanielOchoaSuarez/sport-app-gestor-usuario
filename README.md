@@ -28,7 +28,7 @@ En general dentro de cada aplicación hay dos carpetas principales, src y tests,
 
   - **./src/utils:** Utilidades transversales a la aplicación
 
-- **./tests:** Carpeta que contiene las pruebas unitarias de los handler implementados en la aplicación. Las pruebas unitarias necesitan de la conexión a BD y la cobertura es del 70%.
+- **./tests:** Carpeta que contiene las pruebas unitarias de los comandos implementados en la aplicación. Las pruebas unitarias necesitan de la conexión a BD y la cobertura es del 70%.
 
 - **.env.example:** Archivo con la estructura básica para cargar variables de ambiente necesarias para la ejecución de la aplicación
 
