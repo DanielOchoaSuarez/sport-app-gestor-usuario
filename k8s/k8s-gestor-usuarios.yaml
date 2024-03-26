@@ -2,41 +2,66 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: health-check
+  name: gestor-usuarios
   namespace: desarrollo
   # etiqueta de este deployment
   labels:
-    app: health-check
+    app: gestor-usuarios
 spec:
   replicas: 1
   selector:
     matchLabels:
       # debe hacer match con el label que tenga el deployment
-      app: health-check
+      app: gestor-usuarios
   template:
     metadata:
       labels:
         # etiqueta asignada al pod, debe ser igual que el label del selector
-        app: health-check
+        app: gestor-usuarios
     spec:
       containers:
-        - name: health-check
-          image: localhost:5000/health-check:latest
+        - name: gestor-usuarios
+          image: localhost:5000/sport-app-gestor-usuarios:latest
           # capacidad de la máquina en ejecución normal y limite
           resources:
             requests:
-              memory: "64Mi"
+              memory: "512Mi"
               cpu: "250m"
             limits:
-              memory: "128Mi"
+              memory: "1024Mi"
               cpu: "500m"
           # variables de entorno
           env:
             - name: "VERSION"
               valueFrom:
                 secretKeyRef:
-                  name: appsecrets
+                  name: gestor-usuarios-secrets
                   key: version
+            - name: "DB_USER"
+              valueFrom:
+                secretKeyRef:
+                  name: gestor-usuarios-secrets
+                  key: db_user
+            - name: "DB_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: gestor-usuarios-secrets
+                  key: db_password
+            - name: "DB_HOST"
+              valueFrom:
+                secretKeyRef:
+                  name: gestor-usuarios-secrets
+                  key: db_host
+            - name: "DB_PORT"
+              valueFrom:
+                secretKeyRef:
+                  name: gestor-usuarios-secrets
+                  key: db_port
+            - name: "DB_NAME"
+              valueFrom:
+                secretKeyRef:
+                  name: gestor-usuarios-secrets
+                  key: db_name
           # puerto asignado al contenedor
           ports:
             - containerPort: 3000
@@ -45,38 +70,33 @@ spec:
           # LivenessProbe para verificar la salud del contenedor
           livenessProbe:
             httpGet:
-              path: /health/ping
+              path: /gestor-usuarios/health/ping
               port: 3000
             initialDelaySeconds: 3
             periodSeconds: 60
-      volumes:
-        - name: appsecrets-volume
-          secret:
-            secretName: appsecrets
 
 ---
 # service
 apiVersion: v1
 kind: Service
 metadata:
-  name: health-check-service
+  name: gestor-usuarios-service
   namespace: desarrollo
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
-    app: health-check
+    app: gestor-usuarios
   ports:
     - protocol: TCP
-      port: 80
+      port: 8080
       targetPort: 3000
-      nodePort: 30000
 
 ---
 # ingress
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: health-check-ingress
+  name: gestor-usuarios-ingress
 spec:
   rules:
     - http:
@@ -85,6 +105,6 @@ spec:
             path: "/"
             backend:
               service:
-                name: health-check-service
+                name: gestor-usuarios-service
                 port:
                   number: 3000
