@@ -4,7 +4,7 @@
 
 Aplicación encargada de realizar todas las operaciones necesarias del sistema relacionadas con los deportistas exceptuando su registro.
 
-## Iniciar la aplicación
+## Iniciar la aplicación {#instalación}
 
 La aplicación está construida con [Flask](https://flask.palletsprojects.com/en/3.0.x/) y [pipenv](https://pipenv-es.readthedocs.io/es/latest/).
 
@@ -41,32 +41,8 @@ El proyecto cuenta con el archivo Dockerfile con toda la configuración necesari
 
 Las pruebas unitarias se realizan a través de la herramienta [pytest](https://docs.pytest.org/en/8.0.x/). El proyecto cuenta con el archivo pytest.ini con la configuración del log para la ejecución de pruebas.
 
-Para correr las pruebas unitarias es necesario tener configuradas las variables de ambiente en el archivo .env como se indica en la sección Iniciar la aplicación. Puede ejecutar las pruebas unitarias con el siguiente comando:
+Para correr las pruebas unitarias es necesario tener configuradas las variables de ambiente en el archivo .env como se indica en la sección [Iniciar la aplicación](#instalación). Puede ejecutar las pruebas unitarias con el siguiente comando:
 
 - `pytest --cov-fail-under=70 --cov=src --cov-report=html`
 
-Una vez se ejecute el comando, se corren todas las pruebas unitarias y se elabora el reporte de cobertura que puede visualizar en un navegador abriendo el archivo [./htmlcov/index.html](./htmlcov/index.html)
-
-docker tag health-check:latest localhost:5000/health-check:latest
-docker push localhost:5000/health-check:latest
-
-kubectl get namespaces
-kubectl create namespace desarrollo
-
-kubectl get pods --namespace=desarrollo
-kubectl get pods --namespace=desarrollo -o wide
-
-kubectl get deployments --namespace=desarrollo
-kubectl delete deployment health-check --namespace=desarrollo
-
-kubectl logs health-check-5894697989-t42lc --namespace=desarrollo
-kubectl describe pod health-check-5894697989-t42lc --namespace=desarrollo
-
-kubectl get secrets --namespace=desarrollo
-kubectl describe secret appsecrets --namespace=desarrollo
-
-kubectl apply -f ./k8s/k8s-secrets.yaml
-
-kubectl apply -f ./k8s/k8s-health-check.yaml
-
-kubectl exec -it health-check-5894697989-t42lc --namespace=desarrollo -n desarrollo -- wget http://health-check-service.desarrollo.svc.cluster.local:80/health/ping
+Una vez se ejecute el comando, se corren todas las pruebas unitarias y se elabora el reporte de cobertura que puede visualizar en un navegador abriendo el archivo ./htmlcov/index.html
