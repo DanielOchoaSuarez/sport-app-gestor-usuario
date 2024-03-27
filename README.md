@@ -10,11 +10,9 @@ La aplicación está construida con Python y [Flask](https://flask.palletsprojec
 
 En general dentro de cada aplicación hay dos carpetas principales, src y tests, Así como algunas rutas adicionales y varios archivos de soporte como se indican a continuación:
 
-- **./aws:** Configuración necesaria del proyecto para su despliegue en AWS.
-
 - **./db:** Docker Compose para crear instancia de PostgreSQL y ejecutar la aplicación de forma local
 
-- **./k8s:** Configuración adicional en caso de que se requiera realizar despliegue de la aplicación en un clúster Kubernetes local
+- **./k8s:** Configuración necesaria del proyecto para su despliegue en Kubernetes
 
 - **./src:** Esta carpeta tiene el código y la lógica necesaria para exponer las funcionalidades agrupadas de este microservicio. Dentro de esta ruta se puede encontrar:
 
@@ -56,25 +54,27 @@ Ejecutar los siguientes comandos desde la ruta del proyecto a nivel del archivo 
 
 1. `pipenv shell`
 2. `pipenv install`
-3. `FLASK_APP=./src/main.py flask run -h 0.0.0.0 -p 3000`
+3. `FLASK_APP=./src/main.py flask run -h 0.0.0.0 -p 3002`
 
 Si requiere iniciar la aplicación para desarrollar nuevas funcionalidades o corregir defectos y desea que cada modificación se carque automáticamente puede agregar la opción reload:
 
-- `FLASK_APP=./src/main.py flask run -h 0.0.0.0 -p 3000 --reload`
+- `FLASK_APP=./src/main.py flask run -h 0.0.0.0 -p 3002 --reload`
 
 ### Docker
 
 El proyecto cuenta con el archivo Dockerfile con toda la configuración necesaria para ejecutar la aplicación a través de [gunicorn](https://flask.palletsprojects.com/en/3.0.x/deploying/gunicorn/). Para crear la imagen y correr la aplicación mediante un contenedor debe ejecutar los siguientes comandos en el orden establecido:
 
 1. `docker build . -t sport-app-gestor-usuarios`
-2. `docker run -p 3000:3000 --name gestor-usuarios --env-file .env sport-app-gestor-usuarios`
+2. `docker run -p 3002:3000 --name gestor-usuarios --env-file .env sport-app-gestor-usuarios`
 
 ## Pruebas unitarias
 
 Las pruebas unitarias se realizan a través de la herramienta [pytest](https://docs.pytest.org/en/8.0.x/). El proyecto cuenta con el archivo pytest.ini con la configuración del log para la ejecución de pruebas.
 
-Para correr las pruebas unitarias es necesario tener configuradas las variables de ambiente en el archivo .env como se indica en la sección [Iniciar la aplicación](#iniciar-la-aplicación). Puede ejecutar las pruebas unitarias con el siguiente comando:
+Para correr las pruebas unitarias es necesario tener configuradas las variables de ambiente en el archivo .env como se indica en la sección [Iniciar la aplicación](#iniciar-la-aplicación). Puede ejecutar las pruebas unitarias ejecutando los siguientes comandos:
 
-- `pytest --cov-fail-under=70 --cov=src --cov-report=html`
+1. `pipenv shell`
+2. `pipenv install --dev`
+3. `pytest --cov-fail-under=70 --cov=src --cov-report=html`
 
 Una vez se ejecute el comando, se corren todas las pruebas unitarias y se elabora el reporte de cobertura que puede visualizar en un navegador abriendo el archivo ./htmlcov/index.html

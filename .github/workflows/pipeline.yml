@@ -7,36 +7,36 @@ env:
   ECR_REPOSITORY: servicio-gestor-usuarios
   EKS_CLUSTER_NAME: pf-cluster
   AWS_REGION: us-east-1
-  DB_USER: db_user
-  DB_NAME: db_name
-  DB_PASS: db_pass
 jobs:
   test_servicio:
     runs-on: ubuntu-latest
     continue-on-error: false
     strategy:
       matrix:
-        python-version: [3.11]
-    # services:
-    #   postgres:
-    #     image: postgres:latest
-    #     env:
-    #       POSTGRES_USER: ${{env.DB_USER}}
-    #       POSTGRES_PASSWORD: ${{env.DB_PASS}}
-    #       POSTGRES_DB: ${{env.DB_NAME}}
-    #     ports:
-    #       - 5432:5432
-    #     options: --name=postgres-container
+        python-version: [3.10]
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: ${{ secrets.DB_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.DB_PASS }}
+          POSTGRES_DB: ${{ secrets.DB_NAME }}
+        ports:
+          - 5432:5432
+        options: --name=postgres-container
     steps:
       - uses: actions/checkout@v2
-      - name: Install packages
-        run: pip install -r requirements.txt
+      - name: Install pipenv
+        run: pip install pipenv
+      - name: Install dependencies
+        run: pipenv install --dev
       - name: Run unit test
-        env: 
-          DB_NAME: ${{ env.DB_NAME }}
-          DB_PASS: ${{ env.DB_PASS }}
-        run: pytest
-  
+        env:
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_PASS: ${{ secrets.DB_PASS }}
+        run: |
+          pipenv run pytest --cov=src --cov-fail-under=70
+
   create_release:
     needs: test_servicio
     runs-on: ubuntu-latest
@@ -52,8 +52,8 @@ jobs:
         uses: amitsingh-007/next-release-tag@v5.0.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          tag_prefix: 'v'
-          tag_template: 'yyyy.mm.dd.i'
+          tag_prefix: "v"
+          tag_template: "yyyy.mm.dd.i"
       - name: Create Release
         id: release_tag
         uses: ncipollo/release-action@v1
@@ -97,4 +97,3 @@ jobs:
           sed -i.bak "s|DOCKER_IMAGE|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" kubernetes/deployment.yaml && \
           kubectl apply -f kubernetes/deployment.yaml
           kubectl apply -f kubernetes/service.yaml
-        

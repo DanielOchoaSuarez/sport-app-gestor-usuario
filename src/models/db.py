@@ -1,7 +1,8 @@
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
-import os
+from sqlalchemy.orm import declarative_base
+
 
 db_user = os.getenv('DB_USER')
 db_password = os.getenv('DB_PASSWORD')
