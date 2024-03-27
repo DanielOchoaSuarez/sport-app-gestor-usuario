@@ -10,7 +10,7 @@ class BadRequest(ApiError):
 
 class Unauthorized(ApiError):
     code = 401
-    description = "El sesión no es válida o está vencida"
+    description = "La petición no cuenta con el token, no es válido o está vencido"
 
 
 class Forbidden(ApiError):

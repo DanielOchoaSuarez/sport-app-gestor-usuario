@@ -1,4 +1,3 @@
-import os
 import logging
 from flask import Blueprint, request, make_response
 from src.commands.deporte.get_deportes import GetDeportes
