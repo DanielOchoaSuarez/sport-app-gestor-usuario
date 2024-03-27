@@ -12,8 +12,6 @@ psycopg2 = "*"
 requests = "*"
 gunicorn = "*"
 faker = "*"
-
-[dev-packages]
 pytest = "*"
 pytest-cov = "*"
 pytest-mock = "*"
