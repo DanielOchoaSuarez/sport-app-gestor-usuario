@@ -20,9 +20,8 @@ class GetDeporte(BaseCommand):
             DeporteEntity.id == self.id).first()
 
         if deporte is None:
-            err = f"El deporte con id {self.id} no existe"
-            logger.error(err)
-            raise ResourceNotFound(err)
+            logger.error(f"El deporte con id {self.id} no existe")
+            raise ResourceNotFound
 
         schema = DeporteJsonSchema()
         return schema.dump(deporte)

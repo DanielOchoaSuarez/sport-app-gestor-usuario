@@ -1,30 +1,28 @@
 class ApiError(Exception):
     code = 500
-    description = "Error interno"
+    description = "internal_server_error"
 
 
 class BadRequest(ApiError):
     code = 400
-    description = "Los campos de la petición están incompletos o no cumplen el formato esperado"
+    description = "bad_request"
 
 
 class Unauthorized(ApiError):
     code = 401
-    description = "La petición no cuenta con el token, no es válido o está vencido"
+    description = "unauthorized"
 
 
 class Forbidden(ApiError):
     code = 403
-    description = "No tiene permisos para acceder al recurso solicitado"
+    description = "forbidden"
 
 
 class ResourceNotFound(ApiError):
-    def __init__(self, description=None):
-        super().__init__()
-        self.code = 404
-        self.description = description or "El recurso solicitado no existe"
+    code = 404
+    description = "resource_not_found"
 
 
 class PreconditionFailed(ApiError):
     code = 412
-    description = "La información de la petición no es válida"
+    description = "precondition_failed"
