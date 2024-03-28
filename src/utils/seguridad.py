@@ -6,7 +6,8 @@ from flask import request
 
 from src.errors.errors import TokenNotFound, Unauthorized
 
-URL_AUTORIZADOR = os.getenv('URL_AUTORIZADOR')
+URL_AUTORIZADOR = os.getenv(
+    'URL_AUTORIZADOR', 'http://127.0.0.1:3000/autorizador')
 URL_VALIDAR_TOKEN = URL_AUTORIZADOR + '/autorizador/seguridad/validar-token'
 HEADER_NAME = 'Authorization'
 
